@@ -1,6 +1,7 @@
 import { Link, Navigate } from "react-router-dom"
 import { isLogin } from "../utils/auth"
 import { useState } from "react";
+import { ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
 
 const Create = () => {
     const [title, setTitle] = useState("");
@@ -48,41 +49,65 @@ const Create = () => {
     }
   };
   return (
-    <div className="container mx-auto p-8">
-        <Link to={'/post'} className="inline-block mb-6 px-4 py-3 rounded-full font-medium transition cursor-pointer bg-slate-800 text-white hover:bg-slate-700">
-        ← Back
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12">
+      <div className="container mx-auto px-6 max-w-3xl">
+        <Link 
+          to={'/post'} 
+          className="group inline-flex items-center gap-2 mb-8 text-slate-600 font-medium transition-all duration-300 hover:text-slate-900"
+        >
+          <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+          <span>Back to Posts</span>
         </Link>
-        <h1 className="text-2xl font-bold mb-4">Create New Post</h1>
 
-      <form onSubmit={handleSubmit}>
-        {error && (
-          <div className="bg-red-600 text-white py-2 px-4 rounded mb-4">{error}</div>
-        )}
-        {success && (
-          <div className="bg-green-600 text-white py-2 px-4 rounded mb-4">{success}</div>
-        )}
+        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-10 border border-slate-100">
+          <h1 className="text-3xl font-bold text-slate-800 mb-8">Create New Post</h1>
 
-        <input
-          type="text"
-          placeholder="Enter title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full border border-gray-300 rounded py-2 px-3 mb-4"
-        />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium animate-pulse">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                {error}
+              </div>
+            )}
+            {success && (
+              <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
+                <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                {success}
+              </div>
+            )}
 
-        <textarea
-          placeholder="Write your content here..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="w-full border border-gray-300 rounded py-2 px-3 h-40 mb-4"
-        />
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-700 ml-1">Title</label>
+              <input
+                type="text"
+                placeholder="Enter a catchy title..."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-slate-800 placeholder-slate-400 outline-none transition-all duration-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 focus:bg-white"
+              />
+            </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
-          Create
-        </button>
-      </form>
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-slate-700 ml-1">Content</label>
+              <textarea
+                placeholder="Write your story here..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-slate-800 placeholder-slate-400 outline-none transition-all duration-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 focus:bg-white h-48 resize-none leading-relaxed"
+              />
+            </div>
+
+            <div className="pt-4">
+              <button
+                type="submit"
+                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3.5 px-8 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Create Post
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }
