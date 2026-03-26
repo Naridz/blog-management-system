@@ -1,76 +1,97 @@
-import { Link } from "react-router-dom"
-import { isLogin } from "../utils/auth"
-import { FileText, LogIn, UserPlus, LayoutGrid, LogOut } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { isLogin } from "../utils/auth";
+import { FileText, Plus, LayoutGrid, LogOut, User } from "lucide-react";
+import { Button } from "./ui/Button";
 
 const Navbar = () => {
+  const location = useLocation();
+  const loggedIn = isLogin();
 
-  const handleLogout = (e: any) =>{
+  const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
     localStorage.removeItem("token");
-    window.location.href = '/login'
-  }
+    window.location.href = "/login";
+  };
+
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
-      <div className="container mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          <Link to={"/"} className="flex items-center gap-2 group">
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-2 rounded-xl shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/40 transition-all duration-300">
-              <FileText className="w-5 h-5" />
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center">
+              <FileText className="w-4 h-4 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-              BlogApp
-            </span>
+            <span className="font-semibold text-zinc-900">Blog</span>
           </Link>
 
-          <ul className="flex items-center gap-3">
-            {!isLogin() ? (
+          {/* Navigation */}
+          <div className="flex items-center gap-1">
+            {loggedIn ? (
               <>
-                <li>
-                  <Link 
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-300" 
-                    to={"/login"}
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Login</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300" 
-                    to={"/register"}
-                  >
-                    <UserPlus className="w-4 h-4" />
-                    <span>Register</span>
-                  </Link>
-                </li>
+                <Link
+                  to="/post"
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive("/post")
+                      ? "bg-zinc-100 text-zinc-900"
+                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <LayoutGrid className="w-4 h-4" />
+                    <span className="hidden sm:inline">Posts</span>
+                  </span>
+                </Link>
+                <Link
+                  to="/create"
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive("/create")
+                      ? "bg-zinc-100 text-zinc-900"
+                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <Plus className="w-4 h-4" />
+                    <span className="hidden sm:inline">New</span>
+                  </span>
+                </Link>
+                <div className="h-4 w-px bg-zinc-200 mx-2" />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  icon={LogOut}
+                  onClick={handleLogout}
+                >
+                  <span className="hidden sm:inline">Logout</span>
+                </Button>
               </>
             ) : (
               <>
-                <li>
-                  <Link 
-                    to="/post" 
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50 transition-all duration-300"
-                  >
-                    <LayoutGrid className="w-4 h-4" />
-                    <span>Posts</span>
-                  </Link>
-                </li>
-                <li>
-                  <button 
-                    onClick={handleLogout} 
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl font-medium bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/25 hover:shadow-xl hover:shadow-red-500/30 transition-all duration-300 cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Logout</span>
-                  </button>
-                </li>
+                <Link
+                  to="/login"
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive("/login")
+                      ? "bg-zinc-100 text-zinc-900"
+                      : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    <span>Login</span>
+                  </span>
+                </Link>
+                <Link to="/register">
+                  <Button size="sm">Get Started</Button>
+                </Link>
               </>
             )}
-          </ul>
+          </div>
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

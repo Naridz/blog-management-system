@@ -1,19 +1,26 @@
-import { Link, Navigate } from "react-router-dom"
-import { isLogin } from "../utils/auth"
+import { Link, Navigate } from "react-router-dom";
+import { isLogin } from "../utils/auth";
 import { useState } from "react";
-import { ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowLeft, PenLine } from "lucide-react";
+import { Container } from "../components/ui/Container";
+import { PageHeader } from "../components/ui/PageHeader";
+import { Button } from "../components/ui/Button";
+import { Input } from "../components/ui/Input";
+import { Textarea } from "../components/ui/Textarea";
+import { Alert } from "../components/ui/Alert";
+import { Card, CardContent } from "../components/ui/Card";
 
 const Create = () => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
-    
-    if (!isLogin()) {
-		return <Navigate to="/login" replace />;
-	}
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  if (!isLogin()) {
+    return <Navigate to="/login" replace />;
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!title || !content) {
@@ -45,71 +52,60 @@ const Create = () => {
         setSuccess("");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12">
-      <div className="container mx-auto px-6 max-w-3xl">
-        <Link 
-          to={'/post'} 
-          className="group inline-flex items-center gap-2 mb-8 text-slate-600 font-medium transition-all duration-300 hover:text-slate-900"
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+      <Container size="md">
+        <Link
+          to="/post"
+          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 mb-6"
         >
-          <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
-          <span>Back to Posts</span>
+          <ArrowLeft className="w-4 h-4" />
+          Back to posts
         </Link>
 
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-10 border border-slate-100">
-          <h1 className="text-3xl font-bold text-slate-800 mb-8">Create New Post</h1>
+        <PageHeader
+          title="Create Post"
+          description="Share your thoughts with the community."
+        />
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium animate-pulse">
-                <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                {error}
-              </div>
-            )}
-            {success && (
-              <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
-                <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                {success}
-              </div>
-            )}
+        <Card className="mt-6">
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && <Alert variant="error">{error}</Alert>}
+              {success && <Alert variant="success">{success}</Alert>}
 
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 ml-1">Title</label>
-              <input
-                type="text"
+              <Input
+                label="Title"
                 placeholder="Enter a catchy title..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-slate-800 placeholder-slate-400 outline-none transition-all duration-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 focus:bg-white"
               />
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 ml-1">Content</label>
-              <textarea
+              <Textarea
+                label="Content"
                 placeholder="Write your story here..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-slate-800 placeholder-slate-400 outline-none transition-all duration-300 focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 focus:bg-white h-48 resize-none leading-relaxed"
               />
-            </div>
 
-            <div className="pt-4">
-              <button
-                type="submit"
-                className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3.5 px-8 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Create Post
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Button type="submit" icon={PenLine}>
+                  Create Post
+                </Button>
+                <Link to="/post" className="sm:ml-auto">
+                  <Button variant="secondary">Cancel</Button>
+                </Link>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </Container>
     </div>
-  )
-}
+  );
+};
 
-export default Create
+export default Create;

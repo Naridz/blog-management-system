@@ -3,6 +3,11 @@ import { isLogin } from "../utils/auth";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { ArrowLeft, User, Calendar, Edit2, Trash2, FileText } from "lucide-react";
+import { Container } from "../components/ui/Container";
+import { Button } from "../components/ui/Button";
+import { Badge } from "../components/ui/Badge";
+import { Card, CardContent } from "../components/ui/Card";
+import { LoadingPage } from "../components/ui/Loading";
 
 interface Post {
   id: number;
@@ -36,6 +41,7 @@ const PostDetail = () => {
     const decoded = jwtDecode<TokenPayload>(token);
     currentUserId = decoded.id;
   }
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -83,93 +89,88 @@ const PostDetail = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-      </div>
-    );
+    return <LoadingPage text="Loading post..." />;
   }
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="text-center">
-          <FileText className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500 text-lg font-medium">Post not found</p>
-          <Link 
-            to="/post" 
-            className="inline-flex items-center gap-2 mt-4 text-blue-600 font-medium hover:underline"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to posts
-          </Link>
-        </div>
+      <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+        <Container size="md">
+          <div className="text-center py-16">
+            <FileText className="w-12 h-12 text-zinc-300 mx-auto mb-4" />
+            <h2 className="text-lg font-medium text-zinc-900">Post not found</h2>
+            <p className="text-sm text-zinc-500 mt-1 mb-6">The post may have been deleted.</p>
+            <Link to="/post">
+              <Button variant="secondary" icon={ArrowLeft}>Back to Posts</Button>
+            </Link>
+          </div>
+        </Container>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <Link
-          to="/post"
-          className="group inline-flex items-center gap-2 mb-8 text-slate-600 font-medium transition-all duration-300 hover:text-slate-900"
-        >
-          <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
-          <span>Back to Posts</span>
-        </Link>
+  const isAuthor = currentUserId === post.author_id;
 
-        <article className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-12 border border-slate-100">
-          {/* Header */}
-          <header className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-800 leading-tight mb-6">
-              {post.title}
-            </h1>
-            
-            <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4" />
-                <span className="font-medium text-slate-700">{post.username}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <span>{new Date(post.created_at).toLocaleDateString(undefined, {
+  return (
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+      <Container size="lg">
+        {/* Header Actions */}
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            to="/post"
+            className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to posts
+          </Link>
+
+          {isAuthor && (
+            <div className="flex items-center gap-2">
+              <Link to={`/edit/${post.id}`}>
+                <Button variant="secondary" size="sm" icon={Edit2}>
+                  Edit
+                </Button>
+              </Link>
+              <Button variant="danger" size="sm" icon={Trash2} onClick={handleDelete}>
+                Delete
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Post Content */}
+        <Card>
+          <CardContent className="p-8 md:p-12">
+            {/* Meta */}
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <Badge variant="secondary">
+                <User className="w-3 h-3 mr-1" />
+                {post.username}
+              </Badge>
+              <Badge variant="outline">
+                <Calendar className="w-3 h-3 mr-1" />
+                {new Date(post.created_at).toLocaleDateString(undefined, {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
-                })}</span>
-              </div>
+                })}
+              </Badge>
             </div>
-          </header>
 
-          {/* Content */}
-          <div className="prose prose-lg prose-slate max-w-none">
-            <p className="text-slate-600 leading-relaxed text-lg whitespace-pre-wrap">
-              {post.content}
-            </p>
-          </div>
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 leading-tight mb-8">
+              {post.title}
+            </h1>
 
-          {/* Actions */}
-          {currentUserId === post.author_id && (
-            <div className="mt-12 pt-8 border-t border-slate-100 flex gap-4">
-              <Link
-                to={`/edit/${post.id}`}
-                className="group flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 active:translate-y-0"
-              >
-                <Edit2 className="w-4 h-4" />
-                <span>Edit Post</span>
-              </Link>
-              <button
-                onClick={handleDelete}
-                className="group flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-red-500/25 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-red-500/30 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-              >
-                <Trash2 className="w-4 h-4" />
-                <span>Delete</span>
-              </button>
+            {/* Content */}
+            <div className="prose prose-zinc prose-lg max-w-none">
+              <p className="whitespace-pre-wrap text-zinc-700 leading-relaxed">
+                {post.content}
+              </p>
             </div>
-          )}
-        </article>
-      </div>
+          </CardContent>
+        </Card>
+      </Container>
     </div>
   );
 };

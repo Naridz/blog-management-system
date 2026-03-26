@@ -1,7 +1,12 @@
 import { Link, Navigate } from "react-router-dom";
 import { isLogin } from "../utils/auth";
 import { useEffect, useState } from "react";
-import { Search, Plus, User, Calendar, ArrowRight } from "lucide-react";
+import { Search, Plus, User, Calendar, FileText } from "lucide-react";
+import { Container } from "../components/ui/Container";
+import { PageHeader } from "../components/ui/PageHeader";
+import { Button } from "../components/ui/Button";
+import { Alert } from "../components/ui/Alert";
+import { Loading } from "../components/ui/Loading";
 
 interface PostType {
   id: number;
@@ -64,104 +69,92 @@ const Post = () => {
   }, [search, allPosts]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="container mx-auto px-6 py-12 max-w-7xl">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
-          <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 transition-colors group-focus-within:text-blue-500" />
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+      <Container size="xl">
+        <PageHeader
+          title="Posts"
+          description="Discover stories, ideas, and insights from the community."
+          action={
+            <Link to="/create">
+              <Button icon={Plus}>New Post</Button>
+            </Link>
+          }
+        />
+
+        {/* Search */}
+        <div className="mb-6">
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
             <input
               type="text"
               placeholder="Search posts..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-12 pr-6 py-3 w-80 bg-white border border-slate-200 rounded-2xl text-slate-700 placeholder-slate-400 outline-none transition-all duration-300 ease-out focus:border-blue-400 focus:ring-4 focus:ring-blue-100/50 hover:border-slate-300 shadow-sm hover:shadow-md"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100 transition-all"
             />
           </div>
-          <Link
-            to={"/create"}
-            className="group flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-2xl shadow-lg shadow-blue-500/25 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-blue-500/30 hover:-translate-y-0.5 active:translate-y-0"
-          >
-            <Plus className="w-5 h-5 transition-transform duration-300 group-hover:rotate-90" />
-            <span>Create Post</span>
-          </Link>
         </div>
 
-        {/* Error Message */}
+        {/* Error */}
         {error && (
-          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium animate-pulse">
-            {error}
+          <div className="mb-6">
+            <Alert variant="error">{error}</Alert>
           </div>
         )}
 
-        {/* Loading State */}
-        {loading && (
-          <div className="flex justify-center items-center py-20">
-            <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
-          </div>
-        )}
-
-        {/* Posts Grid */}
-        {!loading && (
+        {/* Loading */}
+        {loading ? (
+          <Loading text="Loading posts..." />
+        ) : (
           <>
-            <p className="text-slate-500 text-sm font-medium mb-6">
-              {filteredPosts.length} {filteredPosts.length === 1 ? "post" : "posts"} found
+            {/* Results Count */}
+            <p className="text-sm text-zinc-500 mb-4">
+              {filteredPosts.length} {filteredPosts.length === 1 ? "post" : "posts"}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.length === 0 ? (
-                <div className="col-span-full text-center py-20">
-                  <p className="text-slate-400 text-lg font-medium">No posts found</p>
-                  <p className="text-slate-400 text-sm mt-2">Try adjusting your search</p>
+
+            {/* Posts Grid */}
+            {filteredPosts.length === 0 ? (
+              <div className="text-center py-16">
+                <div className="w-12 h-12 bg-zinc-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-6 h-6 text-zinc-400" />
                 </div>
-              ) : (
-                filteredPosts.map((post: PostType) => (
+                <h3 className="text-lg font-medium text-zinc-900">No posts found</h3>
+                <p className="text-sm text-zinc-500 mt-1">Try adjusting your search</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPosts.map((post) => (
                   <Link
                     key={post.id}
                     to={`/post/${post.id}`}
-                    className="group bg-white rounded-2xl p-6 flex flex-col min-h-[320px] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 ease-out hover:-translate-y-1"
+                    className="group bg-white border border-zinc-100 rounded-2xl p-6 hover:border-zinc-300 hover:shadow-lg hover:shadow-zinc-200/50 transition-all duration-200"
                   >
-                    {/* Title */}
-                    <h2 className="text-2xl font-bold text-slate-800 leading-tight mb-4 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
+                    <h2 className="font-semibold text-lg text-zinc-900 line-clamp-2 group-hover:text-zinc-700">
                       {post.title}
                     </h2>
-
-                    {/* Content Preview */}
-                    <p className="text-slate-600 leading-relaxed line-clamp-3 mb-6 flex-grow">
+                    <p className="mt-2 text-sm text-zinc-600 line-clamp-3 leading-relaxed">
                       {post.content}
                     </p>
-
-                    {/* Footer */}
-                    <div className="pt-6 border-t border-slate-100">
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-2 text-slate-500">
-                          <User className="w-4 h-4" />
-                          <span className="font-medium text-slate-700">{post.username}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-slate-400">
-                          <Calendar className="w-4 h-4" />
-                          <span>
-                            {new Date(post.created_at).toLocaleDateString(undefined, {
-                              year: "numeric",
-                              month: "short",
-                              day: "numeric",
-                            })}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Read More */}
-                      <div className="mt-4 flex items-center gap-2 text-blue-600 font-medium text-sm opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                        <span>Read more</span>
-                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                      </div>
+                    <div className="mt-4 pt-4 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500">
+                      <span className="flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5" />
+                        {post.username}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {new Date(post.created_at).toLocaleDateString(undefined, {
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
                     </div>
                   </Link>
-                ))
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </>
         )}
-      </div>
+      </Container>
     </div>
   );
 };
