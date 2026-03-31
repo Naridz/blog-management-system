@@ -5,9 +5,9 @@ interface BadgeProps {
 
 export function Badge({ children, variant = "default" }: BadgeProps) {
   const styles = {
-    default: "bg-zinc-900 text-white",
-    secondary: "bg-zinc-100 text-zinc-700",
-    outline: "border border-zinc-200 text-zinc-700",
+    default: "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-950",
+    secondary: "bg-zinc-100 text-zinc-700 dark:bg-zinc-900 dark:text-zinc-200",
+    outline: "border border-zinc-200 text-zinc-700 dark:border-zinc-800 dark:text-zinc-200",
   };
 
   return (

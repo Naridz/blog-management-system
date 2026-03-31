@@ -102,7 +102,7 @@ const Edit = () => {
 
   if (error) {
     return (
-      <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+      <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11] py-8">
         <Container size="md">
           <Alert variant="error">{error}</Alert>
           <Button variant="secondary" className="mt-4" onClick={() => navigate("/post")}>
@@ -114,11 +114,11 @@ const Edit = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11] py-8">
       <Container size="md">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 mb-6"
+          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-50 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
           Go Back

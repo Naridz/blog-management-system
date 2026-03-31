@@ -94,12 +94,12 @@ const PostDetail = () => {
 
   if (!post) {
     return (
-      <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+      <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11] py-8">
         <Container size="md">
           <div className="text-center py-16">
             <FileText className="w-12 h-12 text-zinc-300 mx-auto mb-4" />
-            <h2 className="text-lg font-medium text-zinc-900">Post not found</h2>
-            <p className="text-sm text-zinc-500 mt-1 mb-6">The post may have been deleted.</p>
+            <h2 className="text-lg font-medium text-zinc-900 dark:text-zinc-50">Post not found</h2>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1 mb-6">The post may have been deleted.</p>
             <Link to="/post">
               <Button variant="secondary" icon={ArrowLeft}>Back to Posts</Button>
             </Link>
@@ -112,13 +112,13 @@ const PostDetail = () => {
   const isAuthor = currentUserId === post.author_id;
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 py-8">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11] py-8">
       <Container size="lg">
         {/* Header Actions */}
         <div className="flex items-center justify-between mb-6">
           <Link
             to="/post"
-            className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900"
+            className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-50"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to posts
@@ -158,13 +158,13 @@ const PostDetail = () => {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 leading-tight mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-zinc-50 leading-tight mb-8">
               {post.title}
             </h1>
 
             {/* Content */}
             <div className="prose prose-zinc prose-lg max-w-none">
-              <p className="whitespace-pre-wrap text-zinc-700 leading-relaxed">
+              <p className="whitespace-pre-wrap text-zinc-700 dark:text-zinc-200 leading-relaxed">
                 {post.content}
               </p>
             </div>

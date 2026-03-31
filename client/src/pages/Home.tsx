@@ -8,20 +8,20 @@ const Home = () => {
   const loggedIn = isLogin();
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11]">
       {/* Hero Section */}
       <section className="pt-16 pb-12 sm:pt-24 sm:pb-16">
         <Container size="lg" className="text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 text-zinc-600 text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
             <span>Simple. Clean. Modern.</span>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 max-w-4xl mx-auto">
             Share your stories with the world
           </h1>
           
-          <p className="mt-6 text-lg sm:text-xl text-zinc-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-lg sm:text-xl text-zinc-600 dark:text-zinc-300 max-w-2xl mx-auto leading-relaxed">
             A minimal blogging platform designed for writers who value clarity and focus. No distractions, just pure writing.
           </p>
           
@@ -51,7 +51,7 @@ const Home = () => {
       </section>
 
       {/* Features */}
-      <section className="py-12 border-t border-zinc-200">
+      <section className="py-12 border-t border-zinc-200 dark:border-zinc-800">
         <Container size="lg">
           <div className="grid sm:grid-cols-3 gap-8">
             <FeatureCard 
@@ -79,11 +79,11 @@ const Home = () => {
 function FeatureCard({ icon: Icon, title, description }: { icon: typeof FileText; title: string; description: string }) {
   return (
     <div className="text-center sm:text-left">
-      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center mb-4 mx-auto sm:mx-0">
-        <Icon className="w-5 h-5 text-white" />
+      <div className="w-10 h-10 bg-zinc-900 dark:bg-zinc-50 rounded-lg flex items-center justify-center mb-4 mx-auto sm:mx-0">
+        <Icon className="w-5 h-5 text-white dark:text-zinc-950" />
       </div>
-      <h3 className="font-semibold text-zinc-900">{title}</h3>
-      <p className="mt-2 text-sm text-zinc-600 leading-relaxed">{description}</p>
+      <h3 className="font-semibold text-zinc-900 dark:text-zinc-50">{title}</h3>
+      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">{description}</p>
     </div>
   );
 }

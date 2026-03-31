@@ -40,13 +40,13 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11] flex items-center justify-center py-12 px-4">
       <Container size="sm" className="w-full">
         <Card>
           <CardContent className="p-8 md:p-10">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-zinc-900">Welcome back</h1>
-              <p className="text-sm text-zinc-500 mt-1">Sign in to your account</p>
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Welcome back</h1>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Sign in to your account</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,9 +73,9 @@ const Login = () => {
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-zinc-500">
+            <p className="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
               Don&apos;t have an account?{" "}
-              <Link to="/register" className="font-medium text-zinc-900 hover:underline">
+              <Link to="/register" className="font-medium text-zinc-900 dark:text-zinc-50 hover:underline">
                 Register
               </Link>
             </p>

@@ -70,13 +70,13 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-zinc-50 dark:bg-[#0f0f11] flex items-center justify-center py-12 px-4">
       <Container size="sm" className="w-full">
         <Card>
           <CardContent className="p-8 md:p-10">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-zinc-900">Create account</h1>
-              <p className="text-sm text-zinc-500 mt-1">Get started with Blog</p>
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Create account</h1>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Get started with Blog</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -120,9 +120,9 @@ const Register = () => {
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-zinc-500">
+            <p className="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400">
               Already have an account?{" "}
-              <Link to="/login" className="font-medium text-zinc-900 hover:underline">
+              <Link to="/login" className="font-medium text-zinc-900 dark:text-zinc-50 hover:underline">
                 Login
               </Link>
             </p>
